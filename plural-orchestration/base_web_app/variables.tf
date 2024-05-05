@@ -39,7 +39,7 @@ variable "aws_cidr_default" {
   type        = string
   description = "Cidr address 0.0.0.0/0 default"
   sensitive   = false
-  default = "0.0.0.0/0"
+  default     = "0.0.0.0/0"
 }
 
 variable "enable_dns_hostnames" {

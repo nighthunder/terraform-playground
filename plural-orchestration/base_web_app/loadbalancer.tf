@@ -1,5 +1,7 @@
-#aws_alb
+#aws_alb_service_account
+data "aws_elb_service_account" "root" {
 
+}
 # Create a new load balancer
 resource "aws_lb" "nginx" {
   name               = "globo-web-alb"
@@ -7,9 +9,17 @@ resource "aws_lb" "nginx" {
   load_balancer_type = "application"
   subnets            = [aws_subnet.public_subnet1.id, aws_subnet.public_subnet2.id]
   security_groups    = [aws_security_group.nginx_alb_sg.id]
+  depends_on         = [aws_s3_bucket.web_bucket]
 
   enable_deletion_protection = false
-  tags                       = local.common_tags
+
+  access_logs {
+    bucket  = aws_s3_bucket.web_bucket.bucket
+    prefix  = "alb-logs"
+    enabled = true
+  }
+
+  tags = local.common_tags
 }
 
 #aws_lb_target_group
